@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.co2monitor</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/tk/projects/co2-monitor/venv/bin/python</string>
+        <string>/Users/tk/projects/co2-monitor/api_server.py</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>/Users/tk/projects/co2-monitor</string>
+
+    <key>RunAtLoad</key>
+    <true/>
+
+    <key>KeepAlive</key>
+    <dict>
+        <key>SuccessfulExit</key>
+        <false/>
+    </dict>
+
+    <key>StandardOutPath</key>
+    <string>/Users/tk/projects/co2-monitor/logs/co2-monitor.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>/Users/tk/projects/co2-monitor/logs/co2-monitor-error.log</string>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/Users/tk/projects/co2-monitor/venv/bin:/usr/local/bin:/usr/bin:/bin</string>
+    </dict>
+
+    <key>ThrottleInterval</key>
+    <integer>30</integer>
+</dict>
+</plist>
