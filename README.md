@@ -23,6 +23,12 @@ A real-time CO2 monitoring solution for the TFA Dostmann AirControl Mini CO2 Met
 
 ## Screenshots
 
+![Dashboard Overview](screenshots/dashboard.png)
+*Main dashboard showing current CO2 level, temperature, and historical chart*
+
+![Pattern Analysis](screenshots/patterns.png)
+*Pattern analysis showing hourly, weekly, day/night, and work/weekend patterns*
+
 The dashboard displays:
 - Current CO2 level with color-coded status (Good/OK/Poor/Bad)
 - Current temperature
@@ -189,15 +195,23 @@ Tables:
 
 ```
 co2-monitor/
-├── api_server.py        # FastAPI server with WebSocket support
-├── co2_reader.py        # USB HID communication with sensor
-├── database.py          # SQLite database operations
-├── aggregator.py        # Data aggregation service
+├── api_server.py        # FastAPI server with WebSocket support (Python)
+├── co2_reader.py        # USB HID communication with sensor (Python)
+├── database.py          # SQLite database operations (Python)
+├── aggregator.py        # Data aggregation service (Python)
 ├── tracker.py           # CLI tool for testing
 ├── health_monitor.py    # Health check utility
 ├── co2-monitor.sh       # Service management script
 ├── com.co2monitor.plist # macOS LaunchAgent
 ├── requirements.txt     # Python dependencies
+├── server/              # TypeScript backend (alternative)
+│   ├── src/
+│   │   ├── index.ts     # API server with WebSocket
+│   │   ├── co2Reader.ts # USB HID communication
+│   │   └── database.ts  # SQLite operations
+│   ├── dist/            # Compiled JavaScript
+│   ├── package.json
+│   └── tsconfig.json
 ├── frontend/            # Vue.js frontend
 │   ├── src/
 │   │   ├── App.vue
@@ -207,6 +221,7 @@ co2-monitor/
 │   │   │   └── useCO2Data.ts
 │   │   └── types.ts
 │   └── dist/            # Built frontend
+├── screenshots/         # Dashboard screenshots
 └── data/
     └── co2_data.db      # SQLite database
 ```
@@ -221,6 +236,24 @@ npm run dev  # Start dev server with hot reload
 ```
 
 The dev server proxies API requests to `http://localhost:8080`.
+
+### TypeScript Backend (Alternative)
+
+An alternative TypeScript/Node.js backend is available with minimal dependencies:
+
+```bash
+cd server
+npm install
+npm run build
+npm start
+```
+
+For development with hot reload:
+```bash
+npm run dev
+```
+
+The TypeScript backend provides the same API and WebSocket endpoints as the Python version.
 
 ### Running Tests
 

@@ -22,6 +22,9 @@ yarn-error.log*
 # Frontend build - keep dist for serving
 !frontend/dist/
 
+# Server build - compiled TypeScript
+server/dist/
+
 # IDE
 .idea/
 .vscode/
