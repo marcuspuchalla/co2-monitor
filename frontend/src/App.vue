@@ -2,6 +2,7 @@
 import { useCO2Data } from './composables/useCO2Data'
 import CO2Chart from './components/CO2Chart.vue'
 import AlarmSettings from './components/AlarmSettings.vue'
+import AppFooter from './components/AppFooter.vue'
 import type { TimeRange, Resolution } from './types'
 
 const {
@@ -90,7 +91,7 @@ function formatHour(hour: number): string {
       </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-4 py-8">
+    <main class="max-w-7xl mx-auto px-4 py-8 pb-16">
       <!-- Current Reading Cards -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <!-- CO2 Card -->
@@ -379,11 +380,6 @@ function formatHour(hour: number): string {
       </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="border-t border-gray-700 mt-8 py-6">
-      <p class="text-center text-gray-500 text-sm">
-        CO2 Monitor Dashboard | Real-time updates via WebSocket
-      </p>
-    </footer>
+    <AppFooter />
   </div>
 </template>

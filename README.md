@@ -1,6 +1,12 @@
 # CO2 Monitor
 
-A real-time CO2 monitoring solution for the TFA Dostmann AirControl Mini CO2 Meter (TFA 31.5006). Features a web dashboard with historical data, pattern analysis, and multi-resolution aggregation.
+**TLDR:** Simple local CO2 monitor for the affordable TFA Dostmann AirControl Mini USB device (~€60). Reads CO2/temperature data, stores it in a database, displays it in a web dashboard, and sends desktop notifications when CO2 levels exceed your threshold.
+
+*Status: Local development - runs on your machine only*
+
+---
+
+A real-time CO2 monitoring solution featuring data aggregation, pattern analysis, and alarm notifications.
 
 ## Features
 
@@ -26,18 +32,22 @@ A real-time CO2 monitoring solution for the TFA Dostmann AirControl Mini CO2 Met
 
 ## Screenshots
 
-![Dashboard Overview](screenshots/dashboard.png)
-*Main dashboard showing current CO2 level, temperature, and historical chart*
+### 7-Day Overview with Auto Resolution
+![7-Day Overview](screenshots/dashboard-7d.png)
+*Weekly CO2 trends with automatic resolution (hourly aggregation) showing patterns over 7 days*
 
-![Pattern Analysis](screenshots/patterns.png)
-*Pattern analysis showing hourly, weekly, day/night, and work/weekend patterns*
+### 24-Hour Detail with Raw Resolution
+![24-Hour Raw Data](screenshots/dashboard-24h-raw.png)
+*Detailed 24-hour view with raw sensor data showing granular CO2 and temperature variations*
 
 The dashboard displays:
 - Current CO2 level with color-coded status (Good/OK/Poor/Bad)
-- Current temperature
-- Historical chart with adjustable time range and resolution
-- Pattern analysis cards
-- Device connection status
+- Current temperature with indoor indicator
+- Historical chart with adjustable time range (24h, 7d, 30d, 90d, 1y, All) and resolution (Auto, Raw, 5min, 10min, 15min, Hourly, Daily)
+- Pattern analysis: Day vs Night, Workday vs Weekend
+- Hourly and weekly average patterns
+- Device connection status and statistics
+- Footer with version number and GitHub link
 
 ## Installation
 
@@ -311,7 +321,7 @@ python aggregator.py --backfill
 
 ## License
 
-MIT License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Acknowledgments
 
