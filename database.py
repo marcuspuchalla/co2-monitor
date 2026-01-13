@@ -281,7 +281,7 @@ class CO2Database:
                 """SELECT * FROM measurements
                    WHERE timestamp BETWEEN ? AND ?
                    ORDER BY timestamp""",
-                (start.isoformat(), end.isoformat())
+                (start.strftime('%Y-%m-%d %H:%M:%S'), end.strftime('%Y-%m-%d %H:%M:%S'))
             ).fetchall()
 
             return [
@@ -302,7 +302,7 @@ class CO2Database:
 
     def get_statistics(self, hours: int = 24) -> dict:
         """Get statistics for the last N hours."""
-        start = (datetime.now() - timedelta(hours=hours)).isoformat()
+        start = (datetime.now() - timedelta(hours=hours)).strftime('%Y-%m-%d %H:%M:%S')
 
         with sqlite3.connect(self.db_path) as conn:
             row = conn.execute(
@@ -340,7 +340,7 @@ class CO2Database:
 
     def delete_older_than(self, days: int) -> int:
         """Delete measurements older than N days."""
-        cutoff = (datetime.now() - timedelta(days=days)).isoformat()
+        cutoff = (datetime.now() - timedelta(days=days)).strftime('%Y-%m-%d %H:%M:%S')
         with sqlite3.connect(self.db_path) as conn:
             cursor = conn.execute(
                 "DELETE FROM measurements WHERE timestamp < ?",
@@ -400,7 +400,7 @@ class CO2Database:
                 """SELECT * FROM hourly_stats
                    WHERE hour_start BETWEEN ? AND ?
                    ORDER BY hour_start""",
-                (start.isoformat(), end.isoformat())
+                (start.strftime('%Y-%m-%d %H:%M:%S'), end.strftime('%Y-%m-%d %H:%M:%S'))
             ).fetchall()
 
             return [
@@ -444,7 +444,7 @@ class CO2Database:
                  temp_min, temp_max, temp_avg, is_workday, is_daytime,
                  hour_of_day, day_of_week)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """, (hour_start.isoformat(), co2_min, co2_max, co2_avg, co2_count,
+            """, (hour_start.strftime('%Y-%m-%d %H:%M:%S'), co2_min, co2_max, co2_avg, co2_count,
                   temp_min, temp_max, temp_avg, is_workday, is_daytime,
                   hour_of_day, day_of_week))
             conn.commit()
@@ -461,7 +461,7 @@ class CO2Database:
                    WHERE interval_start BETWEEN ? AND ?
                    AND interval_minutes = ?
                    ORDER BY interval_start""",
-                (start.isoformat(), end.isoformat(), interval_minutes)
+                (start.strftime('%Y-%m-%d %H:%M:%S'), end.strftime('%Y-%m-%d %H:%M:%S'), interval_minutes)
             ).fetchall()
 
             return [
@@ -497,7 +497,7 @@ class CO2Database:
                 (interval_start, interval_minutes, co2_min, co2_max, co2_avg, co2_count,
                  temp_min, temp_max, temp_avg)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """, (interval_start.isoformat(), interval_minutes, co2_min, co2_max,
+            """, (interval_start.strftime('%Y-%m-%d %H:%M:%S'), interval_minutes, co2_min, co2_max,
                   co2_avg, co2_count, temp_min, temp_max, temp_avg))
             conn.commit()
 
@@ -511,7 +511,7 @@ class CO2Database:
                 """SELECT * FROM daily_stats
                    WHERE date BETWEEN ? AND ?
                    ORDER BY date""",
-                (start_date.isoformat(), end_date.isoformat())
+                (start_date.strftime('%Y-%m-%d'), end_date.strftime('%Y-%m-%d'))
             ).fetchall()
 
             return [
@@ -551,7 +551,7 @@ class CO2Database:
                 (date, co2_min, co2_max, co2_avg, co2_day_avg, co2_night_avg,
                  temp_min, temp_max, temp_avg, measurement_count, is_weekend)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """, (stat_date.isoformat(), co2_min, co2_max, co2_avg,
+            """, (stat_date.strftime('%Y-%m-%d'), co2_min, co2_max, co2_avg,
                   co2_day_avg, co2_night_avg, temp_min, temp_max, temp_avg,
                   measurement_count, is_weekend))
             conn.commit()
@@ -581,7 +581,7 @@ class CO2Database:
                 (pattern_type, pattern_key, co2_avg, temp_avg, sample_count, last_updated)
                 VALUES (?, ?, ?, ?, ?, ?)
             """, (pattern_type, pattern_key, co2_avg, temp_avg, sample_count,
-                  datetime.now().isoformat()))
+                  datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
             conn.commit()
 
     # ==================== Analytics Queries ====================
@@ -727,7 +727,7 @@ class CO2Database:
                     AVG(temperature_celsius) as temp_avg
                 FROM measurements
                 WHERE timestamp BETWEEN ? AND ?
-            """, (start.isoformat(), end.isoformat())).fetchone()
+            """, (start.strftime('%Y-%m-%d %H:%M:%S'), end.strftime('%Y-%m-%d %H:%M:%S'))).fetchone()
 
             # Day/night from hourly stats
             day_night = conn.execute("""
@@ -738,7 +738,7 @@ class CO2Database:
                 FROM hourly_stats
                 WHERE hour_start BETWEEN ? AND ?
                 GROUP BY is_daytime
-            """, (start.isoformat(), end.isoformat())).fetchall()
+            """, (start.strftime('%Y-%m-%d %H:%M:%S'), end.strftime('%Y-%m-%d %H:%M:%S'))).fetchall()
 
             day_stats = next((r for r in day_night if r[0] == 1), None)
             night_stats = next((r for r in day_night if r[0] == 0), None)

@@ -55,6 +55,14 @@ start() {
         fi
     fi
 
+    # Kill any existing process on port 8080
+    EXISTING_PID=$(lsof -ti:8080 2>/dev/null || true)
+    if [ -n "$EXISTING_PID" ]; then
+        warn "Killing existing process on port 8080 (PID: $EXISTING_PID)"
+        kill -9 $EXISTING_PID 2>/dev/null || true
+        sleep 1
+    fi
+
     check_venv
     log "Starting CO2 Monitor..."
 

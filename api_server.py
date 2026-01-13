@@ -22,12 +22,16 @@ import uvicorn
 from database import CO2Database
 from co2_reader import CO2Reader, list_devices
 from aggregator import Aggregator
+from alarm_settings import AlarmSettings, AlarmSettingsManager
+from notifications import NotificationManager
 
 
 # Global state
 db = CO2Database()
 reader = CO2Reader()
 aggregator = Aggregator()
+alarm_manager = AlarmSettingsManager()
+notification_manager = NotificationManager()
 current_reading = {"co2_ppm": None, "temperature_celsius": None, "timestamp": None}
 websocket_clients: list[WebSocket] = []
 reader_thread = None
@@ -57,6 +61,15 @@ def reading_loop():
                 }
                 # Store in database
                 db.insert(reading.co2_ppm, reading.temperature_celsius)
+
+                # Check alarm condition
+                alarm_settings = alarm_manager.load()
+                if alarm_settings.enabled and reading.co2_ppm >= alarm_settings.threshold:
+                    notification_manager.send_co2_alarm(
+                        reading.co2_ppm,
+                        alarm_settings.threshold,
+                        alarm_settings.cooldown_minutes
+                    )
         except Exception as e:
             print(f"Reading error: {e}")
 
@@ -345,6 +358,23 @@ async def get_summary():
         },
         "total_measurements": db.count()
     }
+
+
+# ==================== Alarm Settings Endpoints ====================
+
+@app.get("/api/settings/alarm")
+async def get_alarm_settings():
+    """Get current alarm settings."""
+    settings = alarm_manager.load()
+    return settings.to_dict()
+
+
+@app.post("/api/settings/alarm")
+async def update_alarm_settings(settings: dict):
+    """Update alarm settings."""
+    alarm_settings = AlarmSettings.from_dict(settings)
+    alarm_manager.save(alarm_settings)
+    return {"success": True, "settings": alarm_settings.to_dict()}
 
 
 # ==================== Health Endpoint ====================

@@ -37,8 +37,7 @@ server/dist/
 Thumbs.db
 
 # Data
-data/*.db
-data/*.db-journal
+data/
 *.log
 logs/
 
@@ -56,3 +55,12 @@ htmlcov/
 *.tmp
 *.temp
 .cache/
+
+# Claude Code
+.claude/
+.tldr/
+.tldrignore
+claude.md
+claude_log.md
+claude_task.md
+*.pid

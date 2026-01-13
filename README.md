@@ -7,6 +7,9 @@ A real-time CO2 monitoring solution for the TFA Dostmann AirControl Mini CO2 Met
 - **Real-time Monitoring**: Live CO2 and temperature readings via WebSocket
 - **Historical Data**: Track CO2 levels over time with configurable time ranges
 - **Multi-Resolution Aggregation**: View data at raw, 5-min, 10-min, 15-min, hourly, or daily resolution
+- **CO2 Alarms**: System notifications when CO2 exceeds threshold (macOS/Linux)
+  - Configurable threshold and cooldown period
+  - Native OS notifications
 - **Pattern Analysis**:
   - Hourly patterns (average by hour of day)
   - Weekly patterns (average by day of week)
@@ -104,6 +107,23 @@ The `co2-monitor.sh` script provides service management:
 ./co2-monitor.sh logs     # Follow the log file
 ./co2-monitor.sh health   # Check health endpoint
 ```
+
+### CO2 Alarm Configuration
+
+Configure high CO2 notifications directly in the web interface:
+
+1. Click the "Alarm" button in the top-right corner
+2. Enable the alarm toggle
+3. Set your CO2 threshold (default: 1000 ppm)
+4. Configure cooldown period (default: 30 minutes)
+
+When CO2 exceeds your threshold, you'll receive a system notification. The cooldown prevents repeated notifications.
+
+**Supported platforms:**
+- macOS: Native notification center alerts
+- Linux: notify-send notifications
+
+Settings are saved in `data/alarm_settings.json` and persist across restarts.
 
 ### macOS Auto-Start
 

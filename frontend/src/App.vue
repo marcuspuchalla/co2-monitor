@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useCO2Data } from './composables/useCO2Data'
 import CO2Chart from './components/CO2Chart.vue'
+import AlarmSettings from './components/AlarmSettings.vue'
 import type { TimeRange, Resolution } from './types'
 
 const {
@@ -75,6 +76,7 @@ function formatHour(hour: number): string {
         </div>
         <div class="flex items-center gap-4">
           <span v-if="loading" class="text-gray-400 text-sm">Loading...</span>
+          <AlarmSettings />
           <span class="flex items-center gap-2 text-sm">
             <span
               class="w-2 h-2 rounded-full"
